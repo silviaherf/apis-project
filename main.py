@@ -23,34 +23,40 @@ def onlyYears(minYear=1902, maxYear=2020):
 
 def main():
     #print(args)
-    df=clean.open_csv()
+    df=pd.read_csv('src/movies1.csv',encoding='latin-1')
+    #df=clean.open_csv()
    
     minYear = df["Year"].min()
     maxYear = df["Year"].max()
 
     parser = argparse.ArgumentParser(description='Filter the imported dataset by selected values')
     parser.add_argument('-y', dest='year',
-                        default=2020,
+                        default=2020,       
                         type=onlyYears(minYear,maxYear),
                         help="Selected year")
-    """
-     parser.add_argument('-d', dest='director',
-                        default=2015,
-                        type=onlyYears(minYear,maxYear),
-                        help="Año seleccionado")
-    parser.add_argument('-y', dest='year',
-                        default=2015,
-                        type=onlyYears(minYear,maxYear),
-                        help="Año seleccionado")
-    parser.add_argument('-y', dest='year',
-                        default=2015,
-                        type=onlyYears(minYear,maxYear),
-                        help="Año seleccionado")
-                        """
+    
+    parser.add_argument('-d', dest='director',                    
+                        type=str,
+                        help="Selected director")
+
+    
+    parser.add_argument('-a', dest='age',
+                        default='7+',
+                        type=str,
+                        help="Selected age recommendation")
+
+    parser.add_argument('-c', dest='country',
+                        default='United States',
+                        type=str,
+                        help="Selected country")
+                      
 
     args = parser.parse_args()
+    if args.director:
+        print(df[(df.Year==args.year) & (df.Directors==args.director) & (df.Age==args.age) & (df.Country==args.country)].head())
+    else:
+        print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Country==args.country)].head())
 
-    print(df[df.Year==args.year].head())
 
 
 
