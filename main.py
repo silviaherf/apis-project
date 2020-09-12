@@ -22,9 +22,7 @@ def onlyYears(minYear=1902, maxYear=2020):
 
 
 def main():
-    #print(args)
     df=pd.read_csv('src/movies1.csv',encoding='latin-1')
-    #df=clean.open_csv()
    
     minYear = df["Year"].min()
     maxYear = df["Year"].max()
@@ -35,8 +33,7 @@ def main():
                         type=onlyYears(minYear,maxYear),
                         help="Selected year")
     
-    parser.add_argument('-l', dest='language',  
-                        default='English',             
+    parser.add_argument('-l', dest='language',             
                         type=str,
                         help="Selected director")
 
@@ -54,17 +51,17 @@ def main():
     args = parser.parse_args()
    
     if args.age is None:
-        if args.country is None:
-            print(df[(df.Year==args.year) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
-            cuenta=df[(df.Year==args.year)  & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].index.value_counts().sum()
+        if args.language is None:
+            print(df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))].head())
+            cuenta=df[(df.Year==args.year)  & (df.Country.str.contains(f'{args.country}', regex= True, na=False))].index.value_counts().sum()
 
         else:
             print(df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
             cuenta=df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].index.value_counts().sum()
     else:
-        if args.country is None:
-            print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
-            cuenta=df[(df.Year==args.year) & (df.Age==args.age) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].index.value_counts().sum()
+        if args.language is None:
+            print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))].head())
+            cuenta=df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))].index.value_counts().sum()
         else:
             print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
             cuenta=df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].index.value_counts().sum()
