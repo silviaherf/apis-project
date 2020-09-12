@@ -30,42 +30,37 @@ def main():
     maxYear = df["Year"].max()
 
     parser = argparse.ArgumentParser(description='Filter the imported dataset by selected values')
-    parser.add_argument('-y', dest='year', action='append',
+    parser.add_argument('-y', dest='year',
                         default=2015,       
                         type=onlyYears(minYear,maxYear),
                         help="Selected year")
     
     parser.add_argument('-l', dest='language',  
-                        default='English' ,             
+                        default='English',             
                         type=str,
                         help="Selected director")
 
     
-    parser.add_argument('-a', dest='age', action='append',
-                        default='7+',
+    parser.add_argument('-a', dest='age',
                         type=str,
                         help="Selected age recommendation")
 
-    parser.add_argument('-c', dest='country',  action='append',
+    parser.add_argument('-c', dest='country',  
                         default='United States',
                         type=str,
                         help="Selected country")
                       
 
     args = parser.parse_args()
-    
-  
-    """
-    if args.director:
-        print(df[df.Directors==f'{args.director}'].head())
+   
+    if args.age is None:
+        print(df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
+        cuenta=df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].value_counts().sum()
     else:
-        print(df[(df.Year==args.year) & (df.Age==f'{args.age}') & (df.Country==f'{args.country}')].head())
-        
-    """
-
-
-
-
+        print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
+        cuenta=df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].value_counts().sum()
+    
+    return print(f'{cuenta} movies matched with those filters')
 
 if __name__ == "__main__":
     main()
