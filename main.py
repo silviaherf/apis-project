@@ -35,7 +35,8 @@ def main():
                         type=onlyYears(minYear,maxYear),
                         help="Selected year")
     
-    parser.add_argument('-d', dest='director',  action='append'   ,                
+    parser.add_argument('-l', dest='language',  
+                        default='English' ,             
                         type=str,
                         help="Selected director")
 
@@ -52,15 +53,9 @@ def main():
                       
 
     args = parser.parse_args()
-    columns=['Year','Directors','Age','Country']
-    print(args)
-    """
-    for i,arg in enumerate(args):
-        if arg:
-            print(df[df.column[i]==args.arg].head())
-        
-    print(df[df.Directors==args.arg].head())
     
+  
+    """
     if args.director:
         print(df[df.Directors==f'{args.director}'].head())
     else:

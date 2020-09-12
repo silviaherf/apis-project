@@ -1,0 +1,15 @@
+  args2 = argparse.Namespace(**{k: v for k, v in args._get_kwargs()})
+    print(args2)
+    """
+    argumnts = [i for i,j in args._get_kwargs()]
+    columns=['Age','Country','Directors','Year']
+    print(argumnts)
+    args.year=year
+    args.country=country
+    args.director=director
+    args.age=age
+"""
+    for k,v in args2.items():
+        print(df[df[columns[i]]==args.arg].head())
+        """
+    """
