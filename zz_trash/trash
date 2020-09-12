@@ -13,3 +13,21 @@
         print(df[df[columns[i]]==args.arg].head())
         """
     """
+
+
+
+    elif args.language is None:
+        print(df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Age.str.contains(f'{args.age}', regex= True, na=False))].head())
+        cuenta=df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Age.str.contains(f'{args.age}', regex= True, na=False))].index.value_counts().sum()
+    
+    elif args.age is None:
+        print(df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
+        cuenta=df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].index.value_counts().sum()
+    
+    elif args.country is None:
+        print(df[(df.Year==args.year) & (df.Language.str.contains(f'{args.language}', regex= True, na=False)) & (df.Age.str.contains(f'{args.age}', regex= True, na=False))].head())
+        cuenta=df[(df.Year==args.year)  & (df.Language.str.contains(f'{args.language}', regex= True, na=False)) & (df.Age.str.contains(f'{args.age}', regex= True, na=False))].index.value_counts().sum()
+    
+    else:
+        print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
+        cuenta=df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].index.value_counts().sum()
