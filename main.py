@@ -30,33 +30,43 @@ def main():
     maxYear = df["Year"].max()
 
     parser = argparse.ArgumentParser(description='Filter the imported dataset by selected values')
-    parser.add_argument('-y', dest='year',
-                        default=2020,       
+    parser.add_argument('-y', dest='year', action='append',
+                        default=2015,       
                         type=onlyYears(minYear,maxYear),
                         help="Selected year")
     
-    parser.add_argument('-d', dest='director',                    
+    parser.add_argument('-d', dest='director',  action='append'   ,                
                         type=str,
                         help="Selected director")
 
     
-    parser.add_argument('-a', dest='age',
+    parser.add_argument('-a', dest='age', action='append',
                         default='7+',
                         type=str,
                         help="Selected age recommendation")
 
-    parser.add_argument('-c', dest='country',
+    parser.add_argument('-c', dest='country',  action='append',
                         default='United States',
                         type=str,
                         help="Selected country")
                       
 
     args = parser.parse_args()
+    columns=['Year','Directors','Age','Country']
+    print(args)
+    """
+    for i,arg in enumerate(args):
+        if arg:
+            print(df[df.column[i]==args.arg].head())
+        
+    print(df[df.Directors==args.arg].head())
+    
     if args.director:
-        print(df[(df.Year==args.year) & (df.Directors==args.director) & (df.Age==args.age) & (df.Country==args.country)].head())
+        print(df[df.Directors==f'{args.director}'].head())
     else:
-        print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Country==args.country)].head())
-
+        print(df[(df.Year==args.year) & (df.Age==f'{args.age}') & (df.Country==f'{args.country}')].head())
+        
+    """
 
 
 
