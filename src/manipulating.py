@@ -4,9 +4,10 @@ import argparse
 import src.cleaning as clean
 import requests
 from dotenv import load_dotenv
-from pathlib import Path  
-env_path = Path('/src') / '.env'
-load_dotenv(dotenv_path=env_path)
+#from pathlib import Path  
+#env_path = Path('/src') / '.env'
+#load_dotenv(dotenv_path=env_path)
+load_dotenv()
 
 def open_csv():
 
@@ -78,21 +79,34 @@ def select_args(df,args):
 
 
 
-def getUrl(query,api_key=os.getenv('NYT_APIKEY')):
+def get_reviews(args,api_key=os.getenv('NYT_APIKEY')):
     """
     This function gets information out of an API 
 
     """
-
+    i=0
     baseUrl='https://api.nytimes.com/svc/movies/v2/reviews'
-    url = f"{baseUrl}/search.json?query={query}&api-key={api_key}"
-    
+    url = f"{baseUrl}/search.json?offset={20*i}&opening-date={args.year}-01-01%3B{args.year}-12-31&order=by-title&api-key={api_key}"
+
     requestHeaders = {
     "Accept": "application/json"
-  }
+}
 
     response = requests.get(url, headers=requestHeaders)
-    print(f"Requested data; status_code:{response.status_code}")
+    if response.status_code != 200:
+        raise ValueError(f'Invalid github api call: {data["message"]}')
+        
+    else:
+        print(f"Requested data to {baseUrl}; status_code:{response.status_code}")
+   
     data=response.json()
+    
+    while data['has_more']==True:
+        i+=1
+        response = requests.get(url, headers=requestHeaders)
+        print(f'Loading page {i}')
+        data.update(response.json())
+    results=data['num_results']
+    print(f'Your request for {baseUrl} gave {(i+1)*20+results} results')
     return data
 

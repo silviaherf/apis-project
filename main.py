@@ -4,6 +4,8 @@ import pandas as pd
 import src.cleaning as clean
 import src.manipulating  as man
 import argparse
+import requests
+
 
 
 def main():
@@ -36,6 +38,7 @@ def main():
 
     args = parser.parse_args()
     man.select_args(df,args)
+    man.get_reviews(args)
   
 
 if __name__ == "__main__":
