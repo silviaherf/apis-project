@@ -3,6 +3,7 @@ import sys
 import argparse
 import pandas as pd
 import src.cleaning as clean
+import src.manipulating  as man
 
 
 def onlyYears(minYear=1902, maxYear=2020):
@@ -28,7 +29,7 @@ def rangeAge(ages):
     return wrapper
 
 def main():
-    df=pd.read_csv('src/movies1.csv',encoding='latin-1')
+    df=pd.read_csv('src/movies.csv',encoding='latin-1')
     ages=df['Age'].unique()
     minYear = df["Year"].min()
     maxYear = df["Year"].max()
