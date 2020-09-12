@@ -19,11 +19,17 @@ def onlyYears(minYear=1902, maxYear=2020):
             raise argparse.ArgumentTypeError(f"year must be between {minYear} and {maxYear}")
     return wrapper
 
-
+def rangeAge(ages):    
+    def wrapper(age):    
+        if age in ages:
+            return age
+        else:
+            raise argparse.ArgumentTypeError(f"Age parameter must be one out of the folowing ones: {ages}")
+    return wrapper
 
 def main():
     df=pd.read_csv('src/movies1.csv',encoding='latin-1')
-   
+    ages=df['Age'].unique()
     minYear = df["Year"].min()
     maxYear = df["Year"].max()
 
@@ -39,7 +45,7 @@ def main():
 
     
     parser.add_argument('-a', dest='age',
-                        type=str,
+                        type=rangeAge(ages),
                         help="Selected age recommendation")
 
     parser.add_argument('-c', dest='country',  
