@@ -9,8 +9,10 @@ def open_csv():
     """
     folder=input("Please, enter the folder where your cvs file is saved:\n")
     file=input('Please, enter the name for the cvs file you want to open without extension:\n')
-
-    return pd.read_csv(f'../{folder}/{file}.csv')
+    if folder=='input':
+        return pd.read_csv(f'../{folder}/{file}.csv')
+    elif folder=='src':
+        return pd.read_csv(f'{folder}/{file}.csv')
 
 
 #def get_url(endpoint):
