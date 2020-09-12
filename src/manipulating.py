@@ -35,56 +35,6 @@ def export_csv(df):
     return f"{name} has been exported to cvs file"
 
 
-
-
-def get_dataset():
-    df=pd.read_csv('src/movies.csv',encoding='latin-1')
-    ages=df['Age'].unique()
-    minYear = df["Year"].min()
-    maxYear = df["Year"].max()
-
-    parser = argparse.ArgumentParser(description='Filter the imported dataset by selected values')
-    parser.add_argument('-y', dest='year',
-                        default=2015,       
-                        type=onlyYears(minYear,maxYear),
-                        help="Selected year")
-    
-    parser.add_argument('-l', dest='language',             
-                        type=str,
-                        help="Selected director")
-
-    
-    parser.add_argument('-a', dest='age',
-                        type=rangeAge(ages),
-                        help="Selected age recommendation")
-
-    parser.add_argument('-c', dest='country',  
-                        default='United States',
-                        type=str,
-                        help="Selected country")
-                      
-
-    args = parser.parse_args()
-   
-    if args.age is None:
-        if args.language is None:
-            print(df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))].head())
-            cuenta=df[(df.Year==args.year)  & (df.Country.str.contains(f'{args.country}', regex= True, na=False))].index.value_counts().sum()
-
-        else:
-            print(df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
-            cuenta=df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].index.value_counts().sum()
-    else:
-        if args.language is None:
-            print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))].head())
-            cuenta=df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))].index.value_counts().sum()
-        else:
-            print(df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].head())
-            cuenta=df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))].index.value_counts().sum()
-    
-    return print(f'{cuenta} movies matched with those filters')
-
-
 def onlyYears(minYear=1902, maxYear=2020):
     def wrapper(yearStr):
         year = 2020
@@ -106,6 +56,27 @@ def rangeAge(ages):
         else:
             raise argparse.ArgumentTypeError(f"Age parameter must be one out of the folowing ones: {ages}")
     return wrapper
+
+
+def select_args(df,args):
+    if args.age is None:
+        if args.language is None:
+            df=df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))]
+        else:
+            df=df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))]
+    else:
+        if args.language is None:
+            df=df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))]
+
+        else:
+            df=df[(df.Year==args.year) & (df.Age==args.age) & (df.Country.str.contains(f'{args.country}')) & (df.Language.str.contains(f'{args.language}', regex= True, na=False))]
+    
+    print(df.head())             
+    cuenta=df.index.value_counts().sum()
+    print(f'{cuenta} movies matched with those filters')
+    return df
+
+
 
 def getUrl(query,api_key=os.getenv('NYT_APIKEY')):
     """
