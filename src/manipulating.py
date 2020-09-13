@@ -2,8 +2,8 @@ import pandas as pd
 import re
 import os
 import argparse
-import src.cleaning as clean
-#import cleaning as clean
+#import src.cleaning as clean
+import cleaning as clean
 import requests
 from dotenv import load_dotenv
 #from pathlib import Path  
@@ -22,8 +22,8 @@ def open_csv():
     if folder=='input':
         return pd.read_csv(f'../{folder}/{file}.csv',encoding='latin-1')
     elif folder=='src':
-        return pd.read_csv(f'{folder}/{file}.csv',encoding='latin-1')
-        #return pd.read_csv(f'{file}.csv',encoding='latin-1')
+        return pd.read_csv(f'{file}.csv',encoding='latin-1')
+       
 
 
 def export_csv(df):
@@ -111,8 +111,7 @@ def api_to_df(data):
     df=clean.drop_columns(df,['critics_pick','mpaa_rating','summary_short','opening_date','date_updated','multimedia'])
     df=df.rename(columns={"byline": "reviewer"})
     df=clean.capital_names(df,'reviewer')
-    df=clean.special_characters(df,'headline')
-    df=clean.special_characters(df,'display_title')
+    df=clean.special_characters(df,'headline','display_title')
     df['link']=df['link'].map(lambda x: x['url'])
     print(df.head())
     return df
