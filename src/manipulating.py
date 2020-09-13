@@ -123,11 +123,7 @@ def merge_api_df(api,df):
     First of all, it needs to compare movies' titles to find matches
 
     """
-    for movie in list(df.Title):
-        for review in list(api.display_title):
-            res = re.findall(r"%s" % review,r"(.*)%s(.*)" % movie)
-            if res:
-                review=res[0]
-    
-    merged=df.merge(api, how='left', left_on='Title', copy=True, indicator=True)       
+
+      
+    merged=pd.merge(left=df,right=api, how='left', left_on='Title', right_on='display_title')    
     return merged

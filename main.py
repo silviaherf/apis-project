@@ -40,7 +40,7 @@ def main():
     man.select_args(movies,args)
     response=man.get_url(args)
     reviews=man.api_to_df(man.get_url(args))
-    #man.merge_api_df(reviews,movies)
+    man.merge_api_df(reviews,movies)
 
     """
 PARA PRUEBAS,. QUITAR COMENTARIO!!!
@@ -63,7 +63,7 @@ PARA PRUEBAS,. QUITAR COMENTARIO!!!
 
     movies_years=movies[(movies['Year']<2021) & (movies['Year']>2000)].groupby('Year').agg({'Title':'count'})
     print(movies_years)
-    
+
     plt.figure(figsize=(8,8))
     movies_years.plot.bar(xlabel='Year',ylabel='Number of movies',title='Recorded movies per year between 2000-2020')
 
