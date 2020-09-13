@@ -78,7 +78,7 @@ PARA PRUEBAS,. QUITAR COMENTARIO!!!
     #pdf.export_pdf(movies_age,Age_plot,movies_years,years_plot)
 
     
-    man.send_mail('output/file.txt')
+    #man.send_mail('output/file.txt')
 
 if __name__ == "__main__":
     main()
