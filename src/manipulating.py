@@ -131,8 +131,14 @@ def merge_api_df(api,df):
 
     """
 
-      
-    merged=pd.merge(left=df,right=api, how='left', left_on='Title', right_on='display_title')    
+    for movie in list(df.Title):
+        for review in list(api.display_title):
+            res = re.search(r"\b%s\b" % review,r"\b%s\b" % movie, re.IGNORECASE)
+            if res:
+                review=res[0]
+
+    merged=pd.merge(left=df,right=api, how='left', left_on='Title', right_on='display_title') 
+    print(merged.head())   
     return merged
 
 def print_to_stdout(*a): 
@@ -141,9 +147,8 @@ def print_to_stdout(*a):
     # passed as the arguement of the function 
     print(*a, file = sys.stdout) 
 
-def send_mail(file,sender_email='silviaherf@gmail.com',receiver_email='silviaherf@gmail.com'):  
+def send_mail(file,sender_email='silviaherf@gmail.com',receiver_email='silviaherf@gmail.com',password=os.getenv('GMAIL_PASS')):  
     port = 465 
-    password=os.getenv('GMAIL_PASS')
 
     subject = "Apis-project report"
     body = "This is an email with apis-project report attached"
@@ -186,7 +191,7 @@ def send_mail(file,sender_email='silviaherf@gmail.com',receiver_email='silviaher
     try:
         server = smtplib.SMTP('smtp.gmail.com', 587, context=context)
         server.ehlo()
-        server.login("silviaherf@gmail.com",password)
+        server.login(sender_email,password)
         server.sendmail(sender_email, receiver_email, message)
         server.close()
         return 'Email was sent'

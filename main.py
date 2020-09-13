@@ -52,7 +52,7 @@ PARA PRUEBAS,. QUITAR COMENTARIO!!!
             man.get_url(args)
             print(f'Loading page {i+1}')
             reviews=man.api_to_df(man.get_url(args,i=i))
-            #movies=man.merge_api_df(reviews,movies)
+            movies=man.merge_api_df(reviews,movies)
             i+=1
         except ValueError:
             break
