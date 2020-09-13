@@ -1,7 +1,8 @@
 import pandas as pd
 import os
 import argparse
-import src.cleaning as clean
+#import src.cleaning as clean
+import cleaning as clean
 import requests
 from dotenv import load_dotenv
 #from pathlib import Path  
@@ -20,7 +21,8 @@ def open_csv():
     if folder=='input':
         return pd.read_csv(f'../{folder}/{file}.csv',encoding='latin-1')
     elif folder=='src':
-        return pd.read_csv(f'{folder}/{file}.csv',encoding='latin-1')
+        #return pd.read_csv(f'{folder}/{file}.csv',encoding='latin-1')
+        return pd.read_csv(f'{file}.csv',encoding='latin-1')
 
 
 
@@ -91,22 +93,35 @@ def get_reviews(args,api_key=os.getenv('NYT_APIKEY')):
     requestHeaders = {
     "Accept": "application/json"
 }
-
+    
     response = requests.get(url, headers=requestHeaders)
+    
+
     if response.status_code != 200:
-        raise ValueError(f'Invalid github api call: {data["message"]}')
+        raise ValueError(f'Invalid NYTimes api call: {data["fault"]["faultstring"]}')
         
     else:
         print(f"Requested data to {baseUrl}; status_code:{response.status_code}")
+        data=response.json()
+
    
-    data=response.json()
+    """
     
     while data['has_more']==True:
         i+=1
-        response = requests.get(url, headers=requestHeaders)
-        print(f'Loading page {i}')
-        data.update(response.json())
+    """
+    response = requests.get(url, headers=requestHeaders)
+    #print(f'Loading page {i}')
+    data.update(response.json())
+    api_to_df(data)
+
+    return data
+"""
     results=data['num_results']
     print(f'Your request for {baseUrl} gave {(i+1)*20+results} results')
     return data
+
+"""
+
+#def api_to_df(data):
 

@@ -47,12 +47,37 @@ def white_spaces(df,column):
     This function removes every white space in the selected column in a DataFrame.
     The two arguments needed are:
     df:the DataFrame
-    column:the column from the dataFrame as a string
+    column:the column from the dataFrame, as a string
     """
 
     df[column]=df[column].map(lambda x: "".join(x.split()))
 
+    return df 
+
+def special_characters(df,column):
+    """
+    This function removes every special character in the selected column in a DataFrame.
+    The two arguments needed are:
+    df:the DataFrame
+    column:the column from the dataFrame, as a string
+    """
+
+    df[column]=df[column].map(lambda x: "".join(x.split('#')))
+
     return df   
+
+def capital_names(df,column):
+    """
+    This function converts all-capital-lettered strings in the selected column in a DataFrame to a capitalized one.
+    The two arguments needed are:
+    df:the DataFrame
+    column:the column from the dataFrame, as a string
+    """
+    
+    df[column]=df[column].map(lambda x: [i.lower().capitalize() for i in (x.split(' '))])
+    df[column]=df[column].map(lambda l:(' '.join(l[::])))
+    return df
+
 
 def convert_integer(df,column):
     """
@@ -63,4 +88,5 @@ def convert_integer(df,column):
     """
     df[column]=df[column].map(lambda x: int(x))
     return df   
+
 
