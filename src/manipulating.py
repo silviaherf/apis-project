@@ -1,8 +1,8 @@
 import pandas as pd
 import os
 import argparse
-#import src.cleaning as clean
-import cleaning as clean
+import src.cleaning as clean
+#import cleaning as clean
 import requests
 from dotenv import load_dotenv
 #from pathlib import Path  
@@ -21,8 +21,8 @@ def open_csv():
     if folder=='input':
         return pd.read_csv(f'../{folder}/{file}.csv',encoding='latin-1')
     elif folder=='src':
-        #return pd.read_csv(f'{folder}/{file}.csv',encoding='latin-1')
-        return pd.read_csv(f'{file}.csv',encoding='latin-1')
+        return pd.read_csv(f'{folder}/{file}.csv',encoding='latin-1')
+        #return pd.read_csv(f'{file}.csv',encoding='latin-1')
 
 
 
@@ -81,12 +81,11 @@ def select_args(df,args):
 
 
 
-def get_url(args,api_key=os.getenv('NYT_APIKEY')):
+def get_url(args,api_key=os.getenv('NYT_APIKEY'),i=0):
     """
     This function gets information out of an API 
 
     """
-    i=0
     baseUrl='https://api.nytimes.com/svc/movies/v2/reviews'
     url = f"{baseUrl}/search.json?offset={20*i}&opening-date={args.year}-01-01%3B{args.year}-12-31&order=by-title&api-key={api_key}"
 
@@ -98,6 +97,7 @@ def get_url(args,api_key=os.getenv('NYT_APIKEY')):
     
 
     if response.status_code != 200:
+        data=response.json()
         raise ValueError(f'Invalid NYTimes api call: {data["fault"]["faultstring"]}')
         
     else:
@@ -118,21 +118,19 @@ def api_to_df(data):
     print(df.head())
     return data
 
-def merge_api_df(api,df):
+            
 
+def merge_api_df(api,df):
+    """This function merges the DataFrame took out of an API, and the original DataFrame coming from a csv file.
+    First of all, it needs to compare movies' titles to find matches
 
     """
+
+    for movie in list(df.Title):
+        for review in list(api.display_title):
+            res = re.findall(r"%s" % review,r"(.*)%s(.*)" % movie)
+            if res:
+                review=res[0]
     
-    while data['has_more']==True:
-        i+=1
-    
-    response = requests.get(url, headers=requestHeaders)
-    #print(f'Loading page {i}')
-    data.update(response.json())
-
-
-    results=data['num_results']
-    print(f'Your request for {baseUrl} gave {(i+1)*20+results} results')
-    return data
-
-        """
+    merged=df.merge(api, how='left', left_on='Title', copy=True, indicator=True)       
+    return merged

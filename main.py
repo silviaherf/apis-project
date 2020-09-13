@@ -6,8 +6,6 @@ import src.manipulating  as man
 import argparse
 import requests
 
-
-
 def main():
   
     df=pd.read_csv('src/movies.csv',encoding='latin-1')
@@ -39,7 +37,22 @@ def main():
     args = parser.parse_args()
     man.select_args(df,args)
     man.get_url(args)
-    man.api_to_df(man.get_url(args))
+    reviews=man.api_to_df(man.get_url(args))
+
+    i=1
+    while reviews['has_more']==True:
+        try:
+            man.get_url(args)
+            print(f'Loading page {i+1}')
+            reviews=man.api_to_df(man.get_url(args,i=i))
+            i+=1
+
+
+        except ValueError:
+            break
+      
+
+        
     
 
 if __name__ == "__main__":
