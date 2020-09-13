@@ -8,10 +8,10 @@ import requests
 
 def main():
   
-    df=pd.read_csv('src/movies.csv',encoding='latin-1')
-    ages=df['Age'].unique()
-    minYear = df["Year"].min()
-    maxYear = df["Year"].max()
+    movies=pd.read_csv('src/movies.csv',encoding='latin-1')
+    ages=movies['Age'].unique()
+    minYear =movies["Year"].min()
+    maxYear =movies["Year"].max()
 
     parser = argparse.ArgumentParser(description='Filter the imported dataset by selected values')
     parser.add_argument('-y', dest='year',
@@ -35,21 +35,24 @@ def main():
                       
 
     args = parser.parse_args()
-    man.select_args(df,args)
-    man.get_url(args)
+    man.select_args(movies,args)
+    response=man.get_url(args)
     reviews=man.api_to_df(man.get_url(args))
+    #man.merge_api_df(reviews,movies)
 
     i=1
-    while reviews['has_more']==True:
+    while response['has_more']==True:
         try:
             man.get_url(args)
             print(f'Loading page {i+1}')
             reviews=man.api_to_df(man.get_url(args,i=i))
+            #movies=man.merge_api_df(reviews,movies)
             i+=1
-
-
         except ValueError:
             break
+    #print(movies.head())
+
+    
       
 
         

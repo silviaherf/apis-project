@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 import os
 import argparse
 import src.cleaning as clean
@@ -23,8 +24,6 @@ def open_csv():
     elif folder=='src':
         return pd.read_csv(f'{folder}/{file}.csv',encoding='latin-1')
         #return pd.read_csv(f'{file}.csv',encoding='latin-1')
-
-
 
 
 def export_csv(df):
@@ -116,7 +115,7 @@ def api_to_df(data):
     df=clean.special_characters(df,'display_title')
     df['link']=df['link'].map(lambda x: x['url'])
     print(df.head())
-    return data
+    return df
 
             
 
@@ -125,7 +124,6 @@ def merge_api_df(api,df):
     First of all, it needs to compare movies' titles to find matches
 
     """
-
     for movie in list(df.Title):
         for review in list(api.display_title):
             res = re.findall(r"%s" % review,r"(.*)%s(.*)" % movie)
