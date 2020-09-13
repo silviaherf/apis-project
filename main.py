@@ -5,6 +5,8 @@ import src.cleaning as clean
 import src.manipulating  as man
 import argparse
 import requests
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def main():
   
@@ -21,7 +23,7 @@ def main():
     
     parser.add_argument('-l', dest='language',             
                         type=str,
-                        help="Selected director")
+                        help="Selected language")
 
     
     parser.add_argument('-a', dest='age',
@@ -40,6 +42,8 @@ def main():
     reviews=man.api_to_df(man.get_url(args))
     #man.merge_api_df(reviews,movies)
 
+    """
+PARA PRUEBAS,. QUITAR COMENTARIO!!!
     i=1
     while response['has_more']==True:
         try:
@@ -52,7 +56,17 @@ def main():
             break
     #print(movies.head())
 
+    """
+    print('Now, we will take some conclutions out of our movies dataset')
+
+    print(movies.groupby('Age').agg({'Netflix':'sum','Hulu':'sum','Prime_Video':'sum','Disney+':'sum'}))
+
+    movies_years=movies[(movies['Year']<2021) & (movies['Year']>2000)].groupby('Year').agg({'Title':'count'})
+    print(movies_years)
     
+    plt.figure(figsize=(8,8))
+    movies_years.plot.bar(xlabel='Year',ylabel='Number of movies',title='Recorded movies per year between 2000-2020')
+
       
 
         
