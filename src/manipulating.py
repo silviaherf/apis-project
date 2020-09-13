@@ -1,10 +1,17 @@
 import pandas as pd
 import re
+import sys
 import os
 import argparse
 import src.cleaning as clean
 #import cleaning as clean
 import requests
+import smtplib, ssl
+import email, smtplib, ssl
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from dotenv import load_dotenv
 #from pathlib import Path  
 #env_path = Path('/src') / '.env'
@@ -127,3 +134,70 @@ def merge_api_df(api,df):
       
     merged=pd.merge(left=df,right=api, how='left', left_on='Title', right_on='display_title')    
     return merged
+
+def print_to_stdout(*a): 
+  
+    # Here a is the array holding the objects 
+    # passed as the arguement of the function 
+    print(*a, file = sys.stdout) 
+
+def send_mail(file,sender_email='silviaherf@gmail.com',receiver_email='silviaherf@gmail.com'):  
+    port = 465 
+    password=os.getenv('GMAIL_PASS')
+
+    subject = "Apis-project report"
+    body = "This is an email with apis-project report attached"
+
+    # Create a multipart message and set headers
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+
+    # Add body to email
+    message.attach(MIMEText(body, "plain"))
+
+    filename = "file.txt"  # In same directory as script
+
+    # Open PDF file in binary mode
+    with open(file, "rb") as attachment:
+        # Add file as application/octet-stream
+        # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+
+    # Encode file in ASCII characters to send by email    
+    encoders.encode_base64(part)
+
+    # Add header as key/value pair to attachment part
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {filename}",
+    )
+
+    # Add attachment to message and convert message to string
+    message.attach(part)
+    text = message.as_string()
+
+    # Create a secure SSL context
+    context = ssl.create_default_context()
+
+        
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587, context=context)
+        server.ehlo()
+        server.login("silviaherf@gmail.com",password)
+        server.sendmail(sender_email, receiver_email, message)
+        server.close()
+        return 'Email was sent'
+
+
+    except:
+        print('Something went wrong...')
+    
+
+
+
+
+
+
