@@ -38,8 +38,9 @@ def main():
 
     args = parser.parse_args()
     man.select_args(df,args)
-    man.get_reviews(args)
-  
+    man.get_url(args)
+    man.api_to_df(man.get_url(args))
+    
 
 if __name__ == "__main__":
     main()

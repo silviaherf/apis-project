@@ -81,7 +81,7 @@ def select_args(df,args):
 
 
 
-def get_reviews(args,api_key=os.getenv('NYT_APIKEY')):
+def get_url(args,api_key=os.getenv('NYT_APIKEY')):
     """
     This function gets information out of an API 
 
@@ -103,25 +103,36 @@ def get_reviews(args,api_key=os.getenv('NYT_APIKEY')):
     else:
         print(f"Requested data to {baseUrl}; status_code:{response.status_code}")
         data=response.json()
+        return data
 
-   
+
+def api_to_df(data):
+    df=pd.DataFrame.from_dict(data['results'], orient='columns')
+    clean.rename_columns(df)
+    df=clean.drop_columns(df,['critics_pick','mpaa_rating','summary_short','opening_date','date_updated','multimedia'])
+    df=df.rename(columns={"byline": "reviewer"})
+    df=clean.capital_names(df,'reviewer')
+    df=clean.special_characters(df,'headline')
+    df=clean.special_characters(df,'display_title')
+    df['link']=df['link'].map(lambda x: x['url'])
+    print(df.head())
+    return data
+
+def merge_api_df(api,df):
+
+
     """
     
     while data['has_more']==True:
         i+=1
-    """
+    
     response = requests.get(url, headers=requestHeaders)
     #print(f'Loading page {i}')
     data.update(response.json())
-    api_to_df(data)
 
-    return data
-"""
+
     results=data['num_results']
     print(f'Your request for {baseUrl} gave {(i+1)*20+results} results')
     return data
 
-"""
-
-#def api_to_df(data):
-
+        """

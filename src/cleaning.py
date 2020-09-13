@@ -18,7 +18,7 @@ def drop_columns(df,*columns):
     This function drop from the DataFrame the selected columns.
     The arguments needed are 
     df:the DataFrame 
-    columns*:the columns we want to drop. It accept columns as needed; just enter them as string separated by comma ","
+    columns*:the columns we want to drop. It accepts columns as needed; just enter them as string separated by comma ","
     """
     for column in columns:
         df=df.drop(column,axis=1)
@@ -42,40 +42,42 @@ def rounding_value(num):
 
     return  round(num,2)
 
-def white_spaces(df,column):
+def white_spaces(df,*columns):
     """
     This function removes every white space in the selected column in a DataFrame.
     The two arguments needed are:
     df:the DataFrame
-    column:the column from the dataFrame, as a string
+    column:the column from the dataFrame, as a string.It accepts columns as needed; just enter them as string separated by comma ","
     """
-
-    df[column]=df[column].map(lambda x: "".join(x.split()))
+    for column in columns:
+        df[column]=df[column].map(lambda x: "".join(x.split()))
 
     return df 
 
-def special_characters(df,column):
-    """
-    This function removes every special character in the selected column in a DataFrame.
+def special_characters(df,*columns):
+
+    """ 
+    This function removes every special character in the selected columns in a DataFrame.
     The two arguments needed are:
     df:the DataFrame
-    column:the column from the dataFrame, as a string
-    """
-
-    df[column]=df[column].map(lambda x: "".join(x.split('#')))
+    column:The column from the dataFrame, as a string.It accepts columns as needed; just enter them as string separated by comma ","
+    """ 
+    for column in columns:
+        df[column]=df[column].map(lambda x: "".join(x.split('#')))
 
     return df   
 
-def capital_names(df,column):
+
+def capital_names(df,*columns):
     """
     This function converts all-capital-lettered strings in the selected column in a DataFrame to a capitalized one.
     The two arguments needed are:
     df:the DataFrame
-    column:the column from the dataFrame, as a string
+    column:the column from the dataFrame, as a string. It accepts columns as needed; just enter them as string separated by comma ","
     """
-    
-    df[column]=df[column].map(lambda x: [i.lower().capitalize() for i in (x.split(' '))])
-    df[column]=df[column].map(lambda l:(' '.join(l[::])))
+    for column in columns:
+        df[column]=df[column].map(lambda x: [i.lower().capitalize() for i in (x.split(' '))])
+        df[column]=df[column].map(lambda l:(' '.join(l[::])))
     return df
 
 
