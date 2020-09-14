@@ -89,7 +89,7 @@ def main():
     years_plot=movies_years.plot.bar(xlabel='Year',ylabel='Number of movies',title='Recorded movies per year between 2000-2020')
     plt.savefig('output/years.png')
 
-    #pdf.export_pdf(movies_age,Age_plot,movies_years,years_plot)
+    pdf.export_pdf()
 
     
     #man.send_mail('output/file.txt')
