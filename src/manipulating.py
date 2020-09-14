@@ -46,6 +46,11 @@ def export_csv(df):
 
 
 def onlyYears(minYear=1902, maxYear=2020):
+    """
+    This function checks if the entered year is an integer, and tries to convert it in case it is a proper string (with 4 characters).
+    Otherwise, raises an error
+
+    """
     def wrapper(yearStr):
         year = 2020
         try:
@@ -59,7 +64,11 @@ def onlyYears(minYear=1902, maxYear=2020):
             raise argparse.ArgumentTypeError(f"year must be between {minYear} and {maxYear}")
     return wrapper
 
-def rangeAge(ages):    
+def rangeAge(ages):  
+    """
+    This function checks if the entered year is among the reported years in the dataset.
+
+    """  
     def wrapper(age):    
         if age in ages:
             return age
@@ -69,6 +78,10 @@ def rangeAge(ages):
 
 
 def select_args(df,args):
+    """
+    This function takes the arguments entered to the terminal, and returns a dataFrame with those arguments as filters
+
+    """  
     if args.age is None:
         if args.language is None:
             df=df[(df.Year==args.year) & (df.Country.str.contains(f'{args.country}', regex= True, na=False))]
@@ -90,7 +103,7 @@ def select_args(df,args):
 
 def get_url(args,api_key=os.getenv('NYT_APIKEY'),i=0):
     """
-    This function gets information out of an API 
+    This function gets information out of an API for the year previously entered as a terminal argument.
 
     """
     baseUrl='https://api.nytimes.com/svc/movies/v2/reviews'
@@ -114,6 +127,11 @@ def get_url(args,api_key=os.getenv('NYT_APIKEY'),i=0):
 
 
 def api_to_df(data):
+    """
+    This function transforms the information from the API to a dataFrame. It also make some cleaning operations. It just needs the
+    return of a get_url function. 
+
+    """
     df=pd.DataFrame.from_dict(data['results'], orient='columns')
     clean.rename_columns(df)
     df=clean.drop_columns(df,['critics_pick','mpaa_rating','summary_short','opening_date','date_updated','multimedia'])
@@ -124,11 +142,17 @@ def api_to_df(data):
     return df
 
 def similar(a, b):
+    """
+    This function matches from 0 to 1 the similarity of two strings. The parameters it needs are those two strings.
+
+    """
     return SequenceMatcher(None, a, b).ratio()           
 
 def merge_api_df(api,df):
-    """This function merges the DataFrame took out of an API, and the original DataFrame coming from a csv file.
-    First of all, it needs to compare movies' titles to find matches, and then, substitute the original title from the API from the one in movie
+    """
+    This function merges a dataFrame (in fact, the return for the api_to_df function) , and another DataFrame, in this case coming from a csv file.
+    First of all, it needs to compare movies' titles to find matches, and then, substitute the original title from the API from the one in movie.
+    The parameters are the two dataFrames: the right-to-be-joined one, and the left-to-be-joined one.
 
     """
     
@@ -142,6 +166,13 @@ def merge_api_df(api,df):
     return merged
 
 def open_url(title,merged):
+    """
+    This function opens a review url in your default browser.
+    It need two parameters:
+    -title: the title of the movie 
+    -merged: the return of mer_api_df function (dataFrame)
+    You can cancell this function by entering "q"
+    """
     if title=="q":
         pass
     else:
@@ -150,14 +181,26 @@ def open_url(title,merged):
         return webbrowser.open(url)
 
 def print_to_stdout(*a): 
+    """
+    This function prints information in the terminal. It accepts as arguments as needed.
+    E.g. the name of a dataframe, a filtered, table, etc.
+
+    """
   
-    # Here a is the array holding the objects 
-    # passed as the arguement of the function 
+
     print(*a, file = sys.stdout) 
 
 
 
 def send_mail(file,sender_email='silviaherf@gmail.com',receiver_email='silviaherf@gmail.com',password=os.getenv('GMAIL_PASS')):  
+    """
+    This function sends a pdf attachment to the a selected mail account. The parameters needed are:
+    -file: the attachament, a .pdf file
+    -sender_email: the account where the mail will be sent. Optional, mine by default
+    -receiver_email: optional, mine by default
+    -password: the sign in password for the account where the mail will be sent. Optional, mine by default
+
+    """
     port = 465 
     subject = "Apis-project report"
     body = "This is an email with apis-project report attached"
