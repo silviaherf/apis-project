@@ -2,7 +2,8 @@ from fpdf import FPDF
 
 def export_pdf():
     images=[['movies_years.png',38.07, 260.82],['years.png',228.575,171.42],['movies_age.png',150,98],['age.png',600,300]]
-
+    print('Now, we will export a report with the tables and graphs above')
+    print('Exporting...')
 
     pdf = FPDF(unit="pt")      
 
@@ -25,6 +26,8 @@ def export_pdf():
     pdf.image(f'output/{images[2][0]}',w=images[2][1],h=images[2][2])
     pdf.cell(120,30, "Expressed as a pie plot in the following figure:",ln=1)
     pdf.image(f'output/{images[3][0]}',w=images[3][1],h=images[3][2])
+
+    print('Your report was succesfully exported')
 
 
     return pdf.output("output/report.pdf")

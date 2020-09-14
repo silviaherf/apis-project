@@ -133,7 +133,7 @@ def merge_api_df(api,df):
     for movie in list(df.Title):
         for review in list(api.display_title):
             match=similar(review,movie)
-            if match>=0.6:
+            if match>=0.7:
                 api['display_title'] = api['display_title'].replace(review,movie)
 
     merged=pd.merge(left=df,right=api, how='left', left_on='Title', right_on='display_title')   
