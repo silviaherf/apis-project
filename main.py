@@ -42,19 +42,19 @@ def main():
     selected_movies=man.select_args(movies,args)
     response=man.get_url(args)
     reviews=man.api_to_df(man.get_url(args))
-    merged=man.merge_api_df(reviews,selected_movies)
-
     i=1
     while response['has_more']==True:
         try:
-            man.get_url(args)
             print(f'Loading page {i+1}')
-            reviews=man.api_to_df(man.get_url(args,i=i))
-            merged=man.merge_api_df(reviews,selected_movies)
+            reviews=reviews.append(man.api_to_df(man.get_url(args,i=i))).reset_index()
             i+=1
         except ValueError:
             break
-    print(merged.head())
+
+    print(reviews.head(20))
+
+    merged=man.merge_api_df(reviews,selected_movies)
+    print(merged.head(20))
 
 
     print('Now, we will take some conclusions out of our movies dataset')

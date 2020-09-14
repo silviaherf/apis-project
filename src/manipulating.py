@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+from difflib import SequenceMatcher
 import sys
 import os
 import argparse
@@ -120,21 +121,22 @@ def api_to_df(data):
     df=clean.capital_names(df,'reviewer')
     df=clean.special_characters(df,'headline','display_title')
     df['link']=df['link'].map(lambda x: x['url'])
-    print(df.head())
     return df
 
-            
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()           
 
 def merge_api_df(api,df):
     """This function merges the DataFrame took out of an API, and the original DataFrame coming from a csv file.
-    First of all, it needs to compare movies' titles to find matches
+    First of all, it needs to compare movies' titles to find matches, and then, substitute the original title from the API from the one in movie
 
     """
+    
     for movie in list(df.Title):
         for review in list(api.display_title):
-            res = re.search(r"\\b%s\\b" % review,r"\b%s\b" % movie, re.IGNORECASE)
-            if res:
-                review=res.group()
+            match=similar(review,movie)
+            if match>0.7:
+                api['display_title'] = api['display_title'].replace(review,movie)
 
     merged=pd.merge(left=df,right=api, how='left', left_on='Title', right_on='display_title')   
     return merged
