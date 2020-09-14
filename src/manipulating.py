@@ -8,12 +8,14 @@ import src.cleaning as clean
 #import cleaning as clean
 import requests
 import webbrowser
-import smtplib, ssl
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
+from email.message import EmailMessage
+from email.policy import SMTP
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -153,60 +155,48 @@ def print_to_stdout(*a):
     # passed as the arguement of the function 
     print(*a, file = sys.stdout) 
 
+
+
 def send_mail(file,sender_email='silviaherf@gmail.com',receiver_email='silviaherf@gmail.com',password=os.getenv('GMAIL_PASS')):  
     port = 465 
-
     subject = "Apis-project report"
     body = "This is an email with apis-project report attached"
 
-    # Create a multipart message and set headers
+    
     message = MIMEMultipart()
     message["From"] = sender_email
     message["To"] = receiver_email
     message["Subject"] = subject
 
-    # Add body to email
-    message.attach(MIMEText(body, "plain"))
+    message.attach(MIMEText(body, "Here is the exported report with the conclusions from the datasets"))
 
-    filename = "file.txt"  # In same directory as script
+    filename = "output/report.pdf"  
 
-    # Open PDF file in binary mode
-    with open(file, "rb") as attachment:
-        # Add file as application/octet-stream
-        # Email client can usually download this automatically as attachment
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
+    with open(filename, "rb") as attachment: 
+        attachment_opened = attachment.read()
 
-    # Encode file in ASCII characters to send by email    
-    encoders.encode_base64(part)
+    data = MIMEApplication(attachment_opened, _subtype = "pdf", _encoder =encoders.encode_base64)
+    data.add_header('content-disposition', 'attachment', filename = filename)
+    message.attach(data)
 
-    # Add header as key/value pair to attachment part
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
-
-    # Add attachment to message and convert message to string
-    message.attach(part)
     text = message.as_string()
 
-    # Create a secure SSL context
-    context = ssl.create_default_context()
-
-        
+ 
+    ctx=ssl.create_default_context()
+       
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587, context=context)
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465, context=ctx)
         server.ehlo()
         server.login(sender_email,password)
-        server.sendmail(sender_email, receiver_email, message)
+        server.sendmail(sender_email, receiver_email, text)
         server.close()
-        return 'Email was sent'
+        return print('Email was succesfully sent')
 
 
-    except:
-        print('Something went wrong...')
+    except Exception as e:
+        print(f'Something went wrong...{e}')
     
-
+  
 
 
 

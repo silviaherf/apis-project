@@ -11,7 +11,6 @@ import dataframe_image as dfi
 
 
 def main():
-  
     movies=pd.read_csv('src/movies.csv',encoding='latin-1')
     ages=movies['Age'].unique()
     minYear =movies["Year"].min()
@@ -90,9 +89,9 @@ def main():
     plt.savefig('output/years.png')
 
     pdf.export_pdf()
-
     
-    man.send_mail('output/report.pdf')
+    print('Now, we will send the report by email.')
+    man.send_mail('output/report.pdf',receiver_email='silviaherf@gmail.com')
 
 if __name__ == "__main__":
     main()
