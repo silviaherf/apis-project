@@ -58,6 +58,11 @@ def main():
 
 
     print('Now, we will take some conclusions out of our movies dataset')
+
+    n_reviews=merged[~merged['reviewer'].isnull()]['reviewer'].value_counts().sum()
+    n_movies=merged['Title'].value_counts().sum()
+
+    print(f'There are just{n_reviews} out of {n_movies} movies with a published review.')
     
     movies_age=movies.groupby('Age').agg({'Netflix':'sum','Hulu':'sum','Prime_Video':'sum','Disney+':'sum'}).sort_values(by='Age',ascending=False)
     dfi.export(movies_age, 'output/movies_age.png')
