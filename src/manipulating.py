@@ -5,7 +5,6 @@ import sys
 import os
 import argparse
 import src.cleaning as clean
-#import cleaning as clean
 import requests
 import webbrowser
 import smtplib, ssl
@@ -15,9 +14,6 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from dotenv import load_dotenv
-#from pathlib import Path  
-#env_path = Path('/src') / '.env'
-#load_dotenv(dotenv_path=env_path)
 load_dotenv()
 
 def open_csv():

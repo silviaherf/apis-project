@@ -10,9 +10,6 @@ import src.pdf as pdf
 import dataframe_image as dfi
 
 
-
-
-
 def main():
   
     movies=pd.read_csv('src/movies.csv',encoding='latin-1')
@@ -39,10 +36,7 @@ def main():
                         default='United States',
                         type=str,
                         help="Selected country")
-
-
-                      
-
+                    
     args = parser.parse_args()
     selected_movies=man.select_args(movies,args)
     response=man.get_url(args)
@@ -56,10 +50,10 @@ def main():
         except ValueError:
             break
 
-    print(reviews.head(20))
+    print(reviews.head(10))
 
     merged=man.merge_api_df(reviews,selected_movies)
-    print(merged.head(20))
+    print(merged.head(10))
 
 
     print('Now, we will take some conclusions out of our movies dataset')
@@ -72,8 +66,6 @@ def main():
     title=''
     title=input(f'If yes, insert one of the titles above: {title}. Otherwise, call "q"\n')
     man.open_url(title,merged)
-
-    
     
     movies_age=movies.groupby('Age').agg({'Netflix':'sum','Hulu':'sum','Prime_Video':'sum','Disney+':'sum'}).sort_values(by='Age',ascending=False)
     dfi.export(movies_age, 'output/movies_age.png')
