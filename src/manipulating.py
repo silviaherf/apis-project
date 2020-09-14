@@ -3,8 +3,8 @@ import re
 import sys
 import os
 import argparse
-import src.cleaning as clean
-#import cleaning as clean
+#import src.cleaning as clean
+import cleaning as clean
 import requests
 import smtplib, ssl
 import email, smtplib, ssl
@@ -130,12 +130,12 @@ def merge_api_df(api,df):
     First of all, it needs to compare movies' titles to find matches
 
     """
-
-    for movie in list(df.Title):
-        for review in list(api.display_title):
-            res = re.search(r"\b%s\b" % review,r"\b%s\b" % movie, re.IGNORECASE)
+    for movie in list(movies.Title):
+        for review in list(reviews.display_title):
+            res = re.search(r"\\b%s\\b" % review,r"\b%s\b" % movie, re.IGNORECASE)
             if res:
-                review=res[0]
+                print(res.group())
+                review=res.group()
 
     merged=pd.merge(left=df,right=api, how='left', left_on='Title', right_on='display_title') 
     print(merged.head())   
