@@ -91,7 +91,7 @@ def main():
     pdf.export_pdf()
     
     print('Now, we will send the report by email.')
-    man.send_mail('output/report.pdf',receiver_email='silviaherf@gmail.com')
+    man.send_mail('output/report.pdf')
 
 if __name__ == "__main__":
     main()
