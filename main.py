@@ -10,6 +10,9 @@ import src.pdf as pdf
 import dataframe_image as dfi
 
 
+
+
+
 def main():
   
     movies=pd.read_csv('src/movies.csv',encoding='latin-1')
@@ -36,6 +39,8 @@ def main():
                         default='United States',
                         type=str,
                         help="Selected country")
+
+
                       
 
     args = parser.parse_args()
@@ -61,8 +66,14 @@ def main():
 
     n_reviews=merged[~merged['reviewer'].isnull()]['reviewer'].value_counts().sum()
     n_movies=merged['Title'].value_counts().sum()
+    movies_with_reviews=list(merged[~merged['reviewer'].isnull()]['Title'])
+    print(f'There are just {n_reviews} out of {n_movies} movies with a published review.')
+    print('Would you like to open one of the following ones?:\n',movies_with_reviews)
+    title=''
+    title=input(f'If yes, insert one of the titles above: {title}. Otherwise, call "q"\n')
+    man.open_url(title,merged)
 
-    print(f'There are just{n_reviews} out of {n_movies} movies with a published review.')
+    
     
     movies_age=movies.groupby('Age').agg({'Netflix':'sum','Hulu':'sum','Prime_Video':'sum','Disney+':'sum'}).sort_values(by='Age',ascending=False)
     dfi.export(movies_age, 'output/movies_age.png')

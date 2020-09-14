@@ -7,6 +7,7 @@ import argparse
 import src.cleaning as clean
 #import cleaning as clean
 import requests
+import webbrowser
 import smtplib, ssl
 import email, smtplib, ssl
 from email import encoders
@@ -140,6 +141,13 @@ def merge_api_df(api,df):
 
     merged=pd.merge(left=df,right=api, how='left', left_on='Title', right_on='display_title')   
     return merged
+
+def open_url(title,merged):
+    if title=="q":
+        pass
+    else:
+        url=merged[merged['Title']==f'{title}']['link'][1]
+        return webbrowser.open(url)
 
 def print_to_stdout(*a): 
   
