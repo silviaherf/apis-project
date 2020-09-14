@@ -5,6 +5,7 @@ import sys
 import os
 import argparse
 import src.cleaning as clean
+#import cleaning as clean
 import requests
 import webbrowser
 import smtplib, ssl
@@ -142,7 +143,8 @@ def open_url(title,merged):
     if title=="q":
         pass
     else:
-        url=merged[merged['Title']==f'{title}']['link'][1]
+        df=merged[merged['Title']==f'{title}']
+        url=list(df['link'])[0]
         return webbrowser.open(url)
 
 def print_to_stdout(*a): 
