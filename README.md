@@ -6,6 +6,7 @@
 ## Resume
 
 This project aims to find out information about over 16000 movies, completing their information with the New York Times Movies Reviews API.
+The project is developed in Python, and the main script (main.py) is thought to be runned from the terminal.
 
 
 ## Resources
@@ -25,7 +26,7 @@ This API contains every movie review published in the New York Times newspaper.
 
 1) README.txt: As a resume for the content of the project an its development
 
-2) main.py: It contains the main script for the project
+2) main.py: It contains the main script for the project, to be executed from the terminal
 
 3) data_cleaning.ipynb: Jupyer Notebook file that imports the movies dataset and its cleaning up
 
@@ -39,7 +40,13 @@ This API contains every movie review published in the New York Times newspaper.
 
 ## Project development
 
+First of all, the movies dataset has been cleaned by means of outter functions in .py files. This job has been carried out in data_cleaning.ipynb
 
+Afterwards, data from the NY Times API has been loaded and transform into a dataFrame, applying the cleaning operations as well.
+
+From there on, the script filters by keyboard arguments and merges both dataframes, offering to open the url for the review of a selected movie in the merged dataframe.
+
+At last, a gloabl report is developed as PDF file, and sent by mail.
 
 
 ## Conclusions
