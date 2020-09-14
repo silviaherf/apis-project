@@ -42,23 +42,21 @@ def main():
     selected_movies=man.select_args(movies,args)
     response=man.get_url(args)
     reviews=man.api_to_df(man.get_url(args))
-    man.merge_api_df(reviews,selected_movies)
+    merged=man.merge_api_df(reviews,selected_movies)
 
-    """
-PARA PRUEBAS,. QUITAR COMENTARIO!!!
     i=1
     while response['has_more']==True:
         try:
             man.get_url(args)
             print(f'Loading page {i+1}')
             reviews=man.api_to_df(man.get_url(args,i=i))
-            movies=man.merge_api_df(reviews,movies)
+            merged=man.merge_api_df(reviews,selected_movies)
             i+=1
         except ValueError:
             break
-    #print(movies.head())
+    print(merged.head())
 
-    """
+
     print('Now, we will take some conclusions out of our movies dataset')
     
     movies_age=movies.groupby('Age').agg({'Netflix':'sum','Hulu':'sum','Prime_Video':'sum','Disney+':'sum'}).sort_values(by='Age',ascending=False)
