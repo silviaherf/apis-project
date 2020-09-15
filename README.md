@@ -14,12 +14,14 @@ For this project, the following datasets have been used. Specially thanks to the
 
 * **Movies on Netflix, Prime Video, Hulu and Disney+**--> https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney 
 
-This dataset contains over 16000 movies and its appearance on different streamming platforms.
+This dataset contains over 16000 movie an TV series and their appearance on different streamming platforms.
 
 
 * **New York Times Movie Reviews API**--> https://developer.nytimes.com/docs/movie-reviews-api
 
 This API contains every movie review published in the New York Times newspaper.
+
+On behalf of data protection, datasets have not been uploaded to Github.
 
 
 ## Structure
@@ -36,17 +38,17 @@ This API contains every movie review published in the New York Times newspaper.
 
 7) output: It contains the extracted information from the code. For this project, graphs and a report in PDF have been taken out
 
-8) zz_trash: It contains dismissed analysis
+8) zz_trash: It contains dismissed analysis and previous tests
 
 ## Project development
 
-First of all, the movies dataset has been cleaned by means of outter functions in .py files. This job has been carried out in data_cleaning.ipynb
+First of all, the movies dataset has been cleaned by means of outter functions in manipulating.py files, and sent to a csv file. This job has been carried out in data_cleaning.ipynb
 
-Afterwards, data from the NY Times API has been loaded and transform into a dataFrame, applying the cleaning operations as well.
+Afterwards, data from the NY Times API has been loaded and transformed into a dataFrame, applying the cleaning operations as well.
 
 From there on, the script filters by keyboard arguments and merges both dataframes, offering to open the url for the review of a selected movie in the merged dataframe.
 
-At last, a gloabl report is developed as PDF file, and sent by mail.
+At last, a global report is developed as PDF file (this script is located at pdf.py file), and sent by mail.
 
 
 ## Conclusions
@@ -68,7 +70,7 @@ At last, a gloabl report is developed as PDF file, and sent by mail.
 
 
 
-- The next table summarizes the amount of movies per recommended age in each platform:
+- The next table summarizes the amount of movies per recommended age in each platform, where it can be seent that Disney+ has plenty of "all publics" contents.
 
 
 ![movies_age](output/movies_age.png)
