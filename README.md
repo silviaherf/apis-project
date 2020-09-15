@@ -17,7 +17,7 @@ For this project, the following datasets have been used. Specially thanks to the
 This dataset contains over 16000 movie an TV series and their appearance on different streamming platforms.
 
 
-* **New York Times Movie Reviews API**--> https://developer.nytimes.com/docs/movie-reviews-api
+* **New York Times Movie Reviews API**--> https://developer.nytimes.com/
 
 This API contains every movie review published in the New York Times newspaper.
 
