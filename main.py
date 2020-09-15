@@ -69,7 +69,7 @@ def main():
         print(f'There are just {n_reviews} out of {n_movies} movies with a published review.')
         print('Would you like to open one of them?:\nThey are the following ones:\n',movies_with_reviews)
         title=''
-        title=input(f'If yes, insert one of the titles above: {title}. Otherwise, call "q"\n')
+        title=input(f'If yes, insert one of the titles above with no quotation marks: {title}. Otherwise, call "q"\n')
         man.open_url(title,merged)
     
     print("The next table summarizes the movies recorded every year from 2001-2020:")
