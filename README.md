@@ -70,7 +70,7 @@ At last, a global report is developed as PDF file (this script is located at pdf
 
 
 
-- The next table summarizes the amount of movies per recommended age in each platform, where it can be seent that Disney+ has plenty of "all publics" contents.
+- The next table summarizes the amount of movies per recommended age in each platform.
 
 
 ![movies_age](output/movies_age.png)
