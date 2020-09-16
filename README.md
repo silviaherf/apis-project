@@ -6,6 +6,11 @@
 ## Resume
 
 This project aims to find out information about over 16000 movies, completing their information with the New York Times Movies Reviews API.
+
+The idea is allowing the user to filter movies with arguments from the keyboard, and offering to open the url for the review of a selected movie.
+
+At last, a global report is developed as PDF file and sent by mail.
+
 The project is developed in Python, and the main script (main.py) is thought to be runned from the terminal.
 
 
